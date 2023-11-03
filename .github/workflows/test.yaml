@@ -1,0 +1,13 @@
+name: MOTel Unit Tests
+run-name: ${{ github.actor }} is building MOTel
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - run: ./gradlew test
