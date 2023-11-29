@@ -1,5 +1,7 @@
 package com.example.examplemod;
 
+import com.example.examplemod.MyStaticForgeEventHandler;
+
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
@@ -83,6 +85,8 @@ public class ExampleMod
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        MinecraftForge.EVENT_BUS.register(MyStaticForgeEventHandler.class);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
