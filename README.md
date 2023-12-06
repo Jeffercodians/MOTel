@@ -13,13 +13,6 @@ Setup Process:
 
 Step 1: Open your command-line and browse to the folder where you extracted cloned your copy of this repository to.
 
-Step 2: You're left with a choice.
-If you prefer to use Eclipse:
-1. Run the following command: `gradlew genEclipseRuns` (`./gradlew genEclipseRuns` if you are on Mac/Linux)
-2. Open Eclipse, Import > Existing Gradle Project > Select Folder 
-   or run `gradlew eclipse` to generate the project.
-
-If you prefer to use IntelliJ:
 1. Open IDEA, and import project.
 2. Select your build.gradle file and have it import.
 3. Run the following command: `gradlew genIntellijRuns` (`./gradlew genIntellijRuns` if you are on Mac/Linux)
@@ -51,7 +44,11 @@ NeoForged Discord: https://discord.neoforged.net/
 5. Set Game Mode to `Creative`
 6. Set Allow Cheats to `On`
 7. Click `Create New World`
+8. ...
+9. Profit
 
+## Dependencies Added
 
-5. ...
-5. Profit
+* [OpenTelemetry Java](https://github.com/open-telemetry/opentelemetry-java)
+  * based on [Java OpenTelemetry Examples](https://github.com/open-telemetry/opentelemetry-java-examples)
+  * [Docs](https://opentelemetry.io/docs/instrumentation/java/)
