@@ -41,3 +41,17 @@ Additional Resources:
 ==========
 Community Documentation: https://docs.neoforged.net/  
 NeoForged Discord: https://discord.neoforged.net/
+
+## How to add bees
+
+1. Start MOTel: `./gradlew runClient`
+2. Click `Singleplayer`
+3. Click `Create New World`
+4. Set World Name to `Bee's Knees` or another less humorous name
+5. Set Game Mode to `Creative`
+6. Set Allow Cheats to `On`
+7. Click `Create New World`
+
+
+5. ...
+5. Profit
