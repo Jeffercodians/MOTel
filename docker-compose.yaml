@@ -21,6 +21,7 @@ services:
       EULA: "TRUE"
       TYPE: NEOFORGE
       VERSION: "1.20.1"
+      ONLINE_MODE: false
     volumes:
       # attach the relative directory 'data' to the container's /data path
       - ./run/data:/data

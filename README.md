@@ -1,19 +1,18 @@
+# MOtel (Minecraft Open Telemetry Platform)
 
-Installation information
-=======
+Add Open Telemetry hooks into Minecraft events to enable trace analysis of events happening in the game world.
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions at [github](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+## Run the Demos
 
-Once you have your clone, you can initialize your copy.
+From the fresh clone of the repository, run the desired demo bash script
 
-Setup Process:
---------
+Script                  | Description
+------------------------|-----------------------------------------------------------
+demos/jaeger_trace.bash | See jaeger spin up and a simple trace be sent through
+demos/dev_server.bash   | Build the mod jar, launch the server, then launch the client.  Configured for offline dev testing
 
-Step 1: Open your command-line and browse to the folder where you extracted cloned your copy of this repository to.
+## Setting up your IDE:
 
-Step 2: You're left with a choice.
 If you prefer to use Eclipse:
 1. Run the following command: `gradlew genEclipseRuns` (`./gradlew genEclipseRuns` if you are on Mac/Linux)
 2. Open Eclipse, Import > Existing Gradle Project > Select Folder 
@@ -29,15 +28,3 @@ If at any point you are missing libraries in your IDE, or you've run into proble
 run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
 {this does not affect your code} and then start the process again.
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license, if you do not agree with it you can change your mapping names to other crowdsourced names in your 
-build.gradle. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
-
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/

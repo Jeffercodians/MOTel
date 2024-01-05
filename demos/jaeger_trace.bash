@@ -14,7 +14,7 @@ _compose() (
 )
 
 bring_up() {
-    _compose up -d
+    _compose up -d jaeger
 
     trap "_compose down" EXIT
 }
