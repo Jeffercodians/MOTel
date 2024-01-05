@@ -23,6 +23,5 @@ services:
       VERSION: "1.20.1"
       ONLINE_MODE: false
     volumes:
-      # attach the relative directory 'data' to the container's /data path
       - ./run/data:/data
       - ./build/libs:/data/mods
