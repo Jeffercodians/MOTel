@@ -11,4 +11,17 @@ services:
       COLLECTOR_OTLP_ENABLED: "true"
     image: jaegertracing/all-in-one:latest
 
-  # minecraft:
+  minecraft:
+    env_file: ".env"
+    image: itzg/minecraft-server
+    ports:
+      - "${MINECRAFT_GAME_PORT}:25565"
+      - "${MINECRAFT_RCON_PORT}:25575"
+    environment:
+      EULA: "TRUE"
+      TYPE: NEOFORGE
+      VERSION: "1.20.1"
+    volumes:
+      # attach the relative directory 'data' to the container's /data path
+      - ./run/data:/data
+      - ./build/libs:/data/mods
