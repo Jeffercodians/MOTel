@@ -21,7 +21,7 @@ services:
       EULA: "TRUE"
       TYPE: NEOFORGE
       VERSION: "1.20.1"
-      ONLINE_MODE: false
+      ONLINE_MODE: "false"
     volumes:
       - ./run/data:/data
       - ./build/libs:/data/mods
