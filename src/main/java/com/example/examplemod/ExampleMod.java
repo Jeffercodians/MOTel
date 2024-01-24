@@ -1,6 +1,13 @@
 package com.example.examplemod;
 
 import com.mojang.logging.LogUtils;
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.exporter.logging.LoggingSpanExporter;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.food.FoodProperties;
@@ -61,6 +68,14 @@ public class ExampleMod
                 output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
             }).build());
 
+    // Initialize OpenTelemetry SDK and create a tracer instance
+    private static final OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder()
+            .setTracerProvider(SdkTracerProvider.builder()
+                    .addSpanProcessor(SimpleSpanProcessor.create(new LoggingSpanExporter()))
+                    .build())
+            .buildAndRegisterGlobal();
+    private static final Tracer tracer = GlobalOpenTelemetry.getTracer("com.example.examplemod");
+
     public ExampleMod()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -85,17 +100,24 @@ public class ExampleMod
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
+
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
+        Span span = tracer.spanBuilder("ExampleMod.constructor").startSpan();
+        try {
+            // Some common setup code
+            LOGGER.info("HELLO FROM COMMON SETUP");
 
-        if (Config.logDirtBlock)
-            LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
+            if (Config.logDirtBlock) {
+                LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
+            }
 
-        LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
+            LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
 
-        Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
+            Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
+        } finally {
+            span.end();
+        }
     }
 
     // Add the example block item to the building blocks tab
