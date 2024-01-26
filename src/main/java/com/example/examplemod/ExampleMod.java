@@ -1,13 +1,7 @@
 package com.example.examplemod;
 
 import com.mojang.logging.LogUtils;
-import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.exporter.logging.LoggingSpanExporter;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.food.FoodProperties;
@@ -68,13 +62,7 @@ public class ExampleMod
                 output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
             }).build());
 
-    // Initialize OpenTelemetry SDK and create a tracer instance
-    private static final OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder()
-            .setTracerProvider(SdkTracerProvider.builder()
-                    .addSpanProcessor(SimpleSpanProcessor.create(new LoggingSpanExporter()))
-                    .build())
-            .buildAndRegisterGlobal();
-    private static final Tracer tracer = GlobalOpenTelemetry.getTracer("com.example.examplemod");
+    private static OTelLoggingExporter exporter = new OTelLoggingExporter();
 
     public ExampleMod()
     {
@@ -103,7 +91,8 @@ public class ExampleMod
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        Span span = tracer.spanBuilder("ExampleMod.constructor").startSpan();
+        Span span = exporter.tracer.spanBuilder("ExampleMod.constructor").startSpan();
+
         try {
             // Some common setup code
             LOGGER.info("HELLO FROM COMMON SETUP");
