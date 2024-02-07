@@ -59,11 +59,11 @@ public final class ExampleConfiguration {
       SdkTracerProvider.builder()
         .addSpanProcessor(BatchSpanProcessor.builder(jaegerOtlpExporter).build())
         .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
-//        .setResource(Resource.getDefault().merge(serviceNameResource))
+        .setResource(Resource.getDefault().merge(serviceNameResource))
         .build();
 
     // it's always a good idea to shut down the SDK cleanly at JVM exit.
-//    Runtime.getRuntime().addShutdownHook(new Thread(tracerProvider::close));
+    Runtime.getRuntime().addShutdownHook(new Thread(tracerProvider::close));
 
     return OpenTelemetrySdk.builder()
       .setMeterProvider(meterProvider)
@@ -73,8 +73,7 @@ public final class ExampleConfiguration {
 
   public static OtlpGrpcSpanExporter getOtlpGrpcSpanExporter() {
     return OtlpGrpcSpanExporter.builder()
-//      .setEndpoint(getJaegerEndpoint())
-      .setEndpoint("\"http://localhost:4317")
+      .setEndpoint(getJaegerEndpoint())
       .setTimeout(30, TimeUnit.SECONDS)
       .build();
   }
