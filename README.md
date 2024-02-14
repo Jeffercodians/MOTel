@@ -30,6 +30,7 @@ run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean`
 
 ## Resources
 
+* [Snooper](https://minecraft.wiki/w/Snooper)
 * [OpenTelemetry Instrumentation for Java](https://github.com/open-telemetry/opentelemetry-java-instrumentation)
   * [SDK autoconfiguration example](https://github.com/open-telemetry/opentelemetry-java-examples/tree/main/autoconfigure)
 * [OpenTelemetry SDK Autoconfigure](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md)
