@@ -95,7 +95,7 @@ public class ExampleMod
 
         try {
             // Some common setup code
-            LOGGER.info("HELLO FROM COMMON SETUP");
+            LOGGER.info("\uD83D\uDC36 HELLO FROM COMMON SETUP \uD83D\uDC36");
 
             if (Config.logDirtBlock) {
                 LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
