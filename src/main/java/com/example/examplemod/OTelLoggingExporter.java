@@ -11,7 +11,7 @@ public class OTelLoggingExporter {
     public final LongCounter counter;
 
     public OTelLoggingExporter() {
-        OpenTelemetry oTel = ExampleConfiguration.initOpenTelemetry();
+        OpenTelemetry oTel = OTelConfiguration.initOpenTelemetry();
         this.tracer = oTel.getTracer(INSTRUMENTATION_NAME);
         this.counter = oTel.getMeter(INSTRUMENTATION_NAME).counterBuilder("work_done").build();
     }

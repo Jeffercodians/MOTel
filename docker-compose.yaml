@@ -10,6 +10,10 @@ services:
     environment:
       COLLECTOR_OTLP_ENABLED: "true"
     image: jaegertracing/all-in-one:latest
+    volumes:
+      - ./config.yaml:/config/config.yaml
+    command: --config-file=/config/config.yaml
+
 
   minecraft:
     env_file: ".env"

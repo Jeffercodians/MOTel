@@ -1,7 +1,23 @@
 package com.example.examplemod;
 
 import com.mojang.logging.LogUtils;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.metrics.LongCounter;
+import io.opentelemetry.api.metrics.LongHistogram;
+import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.context.Context;
+import io.opentelemetry.context.Scope;
+import io.opentelemetry.exporter.otlp.metrics.OtlpGrpcMetricExporter;
+import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.metrics.SdkMeterProvider;
+import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
+import io.opentelemetry.sdk.resources.Resource;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.food.FoodProperties;
@@ -29,6 +45,12 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
+
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
+import static com.example.examplemod.OTelConfiguration.initOpenTelemetry;
+import static io.opentelemetry.semconv.ResourceAttributes.SERVICE_NAME;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(ExampleMod.MODID)
@@ -62,8 +84,6 @@ public class ExampleMod
                 output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
             }).build());
 
-    private static OTelLoggingExporter exporter = new OTelLoggingExporter();
-
     public ExampleMod()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -91,23 +111,26 @@ public class ExampleMod
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        Span span = exporter.tracer.spanBuilder("ExampleMod.constructor").startSpan();
+        OpenTelemetry openTelemetry = initOpenTelemetry();
 
-        try {
+        Tracer tracer = openTelemetry.getTracer("io.opentelemetry.example");
+        Meter meter = openTelemetry.getMeter("io.opentelemetry.example");
+        LongCounter counter = meter.counterBuilder("example_counter").build();
+        LongHistogram histogram = meter.histogramBuilder("super_timer").ofLongs().setUnit("ms").build();
+
+        Span span = tracer.spanBuilder("ExampleMod.constructor").startSpan();
+        Context exampleContext = Context.current().with(span);
+
+        try (Scope scope = exampleContext.makeCurrent()) {
             // Some common setup code
-            LOGGER.info("\uD83D\uDC36 HELLO FROM COMMON SETUP \uD83D\uDC36");
-
-            if (Config.logDirtBlock) {
-                LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
-            }
-
-            LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
-
+            span.setAttribute("Wtf", "Wut");
+            histogram.record(0, Attributes.empty(), exampleContext);
             Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
         } finally {
             span.end();
         }
     }
+
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event)
